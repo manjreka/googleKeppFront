@@ -6,6 +6,8 @@ let MainNoteList = document.getElementById('note-item')
 
 
 
+
+
 function createAndAppend(note) {
 
     let {
@@ -27,7 +29,7 @@ function createAndAppend(note) {
     noteHeading.classList.add('note-heading')
 
     let archive = document.createElement('i');
-    archive.className = "fa-duotone fa-solid fa-2x fa-arrow-rotate-left"
+    archive.className = "fa-regular fa-folder-open"
     archive.onclick = () => {
         console.log('archive clicked')
         console.log(_id)
@@ -75,7 +77,7 @@ function displayNoteItems(data) {
 function main() {
 
 
-    fetch('http://localhost:3040/notes/archive')
+    fetch('http://localhost:3040/get/archived/notes')
 
         .then(function (response) {
             return response.json();
@@ -87,6 +89,31 @@ function main() {
 }
 
 main()
+
+
+// document.getElementById('search').addEventListener('keydown', function (event) {
+// event.preventDefault()
+//     if (event.key === 'Enter') {
+//         let userValue = event.target.value
+//         console.log(userValue)
+
+//         let serachUrl = `http://localhost:3040/get/notes/serach?title=${userValue}`
+
+//         fetch(serachUrl)
+//             .then(function (response) {
+//                 return response.json()
+//             })
+//             .then(function (data) {
+//                 console.log(data)
+//                 displaySearchResult(data)
+//             })
+//             .catch(err => {
+//                 console.log(err)
+//             })
+//     }
+
+// })
+
 
 document.getElementById('keep').onclick = () => {
      window.location.href = 'index.html'

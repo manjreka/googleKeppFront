@@ -4,13 +4,50 @@ let listContainerEl = document.getElementById('list-container');
 let MainNoteList = document.getElementById('note-item')
 
 
+
+
 function createAndAppend(note) {
 
     let {
         title,
         content,
-        _id
+        _id, deletedAt
+
     } = note;
+
+    // deletedAt gives info when item was moved to trash
+
+
+    let readDelDate = new Date (deletedAt)
+    console.log(readDelDate)
+
+    //delete item automatically after 30 days 
+
+    let newDate = new Date (readDelDate.getFullYear(), readDelDate.getMonth(), readDelDate.getDate() + 30 )
+
+    console.log(newDate)
+
+    let today = new Date()
+
+    if (newDate === today) {
+
+        const deleteURL = `http://localhost:3040/notes/${_id}/permanent`;
+        const deleteOptions = {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+
+        fetch(deleteURL, deleteOptions)
+            .then(function(){
+                window.location.reload()
+            })
+
+    }
+
+
+    
 
     let noteListEl = document.createElement('li');
     noteListEl.classList.add('list-item')
@@ -24,13 +61,13 @@ function createAndAppend(note) {
     noteHeading.textContent = title;
     noteHeading.classList.add('note-heading')
 
-  
+
 
     let trash = document.createElement('i');
-    trash.className = "fa-duotone fa-solid fa-2x fa-arrow-rotate-left"
+    trash.className = "fa-solid fa-trash-can-arrow-up"
 
     trash.onclick = () => {
-        
+
         console.log(_id)
         const trashMoveUrl = `http://localhost:3040/notes/${_id}/trash/restore`
         const trashMoveOptions = {
@@ -50,14 +87,14 @@ function createAndAppend(note) {
             });
     }
 
-    let deletePer = document.createElement('img');
-    deletePer.src = 'https://res.cloudinary.com/dtzajnril/image/upload/v1721358837/deletePer_py93fd.png'
-    deletePer.style.width = '35px'
+    let deletePer = document.createElement('i');
+  
+    deletePer.className = "fa-solid fa-ban"
 
     deletePer.onclick = () => {
-        
-        const deleteURL = `http://localhost:3040/notes/${_id}/permanent` ;
-        const deleteOptions =  {
+
+        const deleteURL = `http://localhost:3040/notes/${_id}/permanent`;
+        const deleteOptions = {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
@@ -65,10 +102,10 @@ function createAndAppend(note) {
         }
 
         fetch(deleteURL, deleteOptions)
-            .then(function(response){
+            .then(function (response) {
                 return response.json()
             })
-            .then(function(data){
+            .then(function (data) {
                 window.location.reload()
             })
     }
@@ -94,22 +131,20 @@ function displayNoteItems(data) {
     }
 }
 
-function main() {
+function main(){
+    fetch('http://localhost:3040/get/trashed/notes')
 
-
-    fetch('http://localhost:3040/notes/trash')
-
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (jsonData) {
-            console.log(jsonData);
-            displayNoteItems(jsonData)
-        });
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (jsonData) {
+        console.log(jsonData);
+        displayNoteItems(jsonData)
+    });
 }
 
 main()
 
 document.getElementById('keep').onclick = () => {
-     window.location.href = 'index.html'
+    window.location.href = 'index.html'
 }

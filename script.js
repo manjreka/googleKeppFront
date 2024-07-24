@@ -12,34 +12,31 @@ let subCont = document.getElementById('sub-container')
 
 
 
-
-
-
 let noteData = {
     title: '',
     content: ''
 }
 
-titleEl.addEventListener('change', function(event) {
+titleEl.addEventListener('change', function (event) {
     noteData.title = event.target.value;
 });
 
-contentEl.addEventListener('change', function(event) {
+contentEl.addEventListener('change', function (event) {
     noteData.content = event.target.value;
 });
 
 
 function createAndAppend(note) {
-    
+
     let {
-        title, 
+        title,
         content,
         _id
     } = note;
-    
+
     let noteListEl = document.createElement('li');
     noteListEl.classList.add('list-item')
-    
+
 
     let noteListTopEl = document.createElement('div');
     noteListTopEl.classList.add('top-container-style')
@@ -49,55 +46,58 @@ function createAndAppend(note) {
     noteHeading.textContent = title;
     noteHeading.classList.add('note-heading')
 
-    let edit = document.createElement('img');
-    edit.src = 'https://res.cloudinary.com/dtzajnril/image/upload/v1721358658/pen_ipz1xg.png'
-    edit.style.width = '30px'
+    let edit = document.createElement('i');
+    edit.className = "fa-solid fa-pen-to-square"
+
+    edit.onclick = () => {
+        window.location.href = `note.html?id=${_id}`;
+    }
 
 
     let archive = document.createElement('i');
-    archive.className = "fa-solid fa-2x fa-folder";
+    archive.className = "fa-regular fa-folder"
     archive.onclick = () => {
         console.log('archive clicked')
         console.log(_id)
-        const archiveMoveUrl =  `http://localhost:3040/notes/${_id}/archive`
+        const archiveMoveUrl = `http://localhost:3040/notes/${_id}/archive`
         const archiveMoveOptions = {
-             method: "PATCH",
+            method: "PATCH",
             headers: {
-                 "Content-Type": "application/json"
+                "Content-Type": "application/json"
             }
         }
-        
+
         fetch(archiveMoveUrl, archiveMoveOptions)
-            .then(function(response) {
+            .then(function (response) {
                 return response.json();
             })
-            .then( (jsonData) => {
+            .then((jsonData) => {
                 console.log(jsonData);
                 window.location.reload()
             });
     }
 
     let trash = document.createElement('i');
-    trash.className = 'fa-solid fa-2x fa-trash';
+    trash.className = "fa-solid fa-trash"
     trash.onclick = () => {
         console.log('trash icon clicked!!')
         const trashMoveUrl = `http://localhost:3040/notes/trash/${_id}`;
 
         const trashMoveOptions = {
             method: "DELETE",
-           headers: {
+            headers: {
                 "Content-Type": "application/json"
-           }
-       }
+            }
+        }
 
-       fetch(trashMoveUrl, trashMoveOptions)
-       .then(response =>{
-        return response.json()
-       })
-       .then(jsonData => {
-        console.log(jsonData)
-        window.location.reload()
-       })
+        fetch(trashMoveUrl, trashMoveOptions)
+            .then(response => {
+                return response.json()
+            })
+            .then(jsonData => {
+                console.log(jsonData)
+                window.location.reload()
+            })
 
     }
 
@@ -125,10 +125,10 @@ function displayNoteItems(data) {
 let listUrl = 'http://localhost:3040/notes';
 
 fetch(listUrl)
-    .then(function(response) {
+    .then(function (response) {
         return response.json();
     })
-    .then(function(jsonData) {
+    .then(function (jsonData) {
         displayNoteItems(jsonData);
     });
 
@@ -146,22 +146,22 @@ function submitFormDetails() {
     const url = 'http://localhost:3040/notes';
 
     fetch(url, options)
-        .then(function(response) {
+        .then(function (response) {
             return response.json();
         })
         .then(async (jsonData) => {
             console.log(jsonData)
             await createAndAppend(jsonData)
             alert('note created successfully!!');
-           
+
         });
 
-    
 
- 
+
+
 }
 
-formEl.addEventListener('submit', function(event) {
+formEl.addEventListener('submit', function (event) {
     event.preventDefault();
     submitFormDetails();
     titleEl.value = ''
@@ -169,7 +169,7 @@ formEl.addEventListener('submit', function(event) {
 })
 
 
-function noSearchOutput(){
+function noSearchOutput() {
 
     const errEl = document.createElement('h1')
     errEl.textContent = 'No Match Found'
@@ -179,48 +179,49 @@ function noSearchOutput(){
 
 }
 
-function displaySearchResult(data){
+function displaySearchResult(data) {
 
     MainNoteList.textContent = ''
     if (data.length === 0) {
         noSearchOutput()
     }
-    else{
+    else {
         displayNoteItems(data)
     }
 
 }
 
 
-serachEl.addEventListener('keydown',  function(event){
-    event.preventDefault()
-    if (event.key === 'Enter'){
+serachEl.addEventListener('keydown', function (event) {
+    
+    if (event.key === 'Enter') {
         let userValue = event.target.value
         console.log(userValue)
 
-       
 
-        let serachUrl = `http://localhost:3040/notes/search?title=${userValue}`
 
-         fetch(serachUrl)
-        .then(function (response){
-            return response.json()
-        })
-        .then(function(data){
-            console.log(data)
-           displaySearchResult(data)
-        })
-        .catch(err => {
-            console.log(err)
-        })
+        let serachUrl = `http://localhost:3040/get/notes/serach?title=${userValue}`
+
+        fetch(serachUrl)
+            .then(function (response) {
+                return response.json()
+            })
+            .then(function (data) {
+                console.log(data)
+                displaySearchResult(data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
-    
+
 })
 
 
 
 document.getElementById('three-line').onclick = () => {
-    document.getElementById('dropdown').classList.toggle('side-bar')
+    console.log('button clicked')
+    document.getElementById('dropdown').classList.toggle('bar-visible')
 }
 
 

@@ -28,23 +28,21 @@
 <body>
     <div class="header">
         <div style='display: flex'>
-            
-            <i  style="margin: 15px" class="fa-solid fa-3x fa-user"></i>
+
+            <i style="margin: 15px" class="fa-solid fa-3x fa-user"></i>
             <h1><i style="margin: 15px" class="fas fa-sticky-note"></i> Keep</h1>
         </div>
         <div class="input-container-header">
             <i class="fa-solid fa-2x fa-magnifying-glass"></i>
-            <input id = 'search' type='search' class="search-input" placeholder="Search" />
+            <input id='search' type='search' class="search-input" placeholder="Search" />
         </div>
         <div>
-            <i  style="margin: 15px" class="fa-solid fa-3x fa-gear"></i>
-            <i id = 'three-line' style="margin: 15px" class="fa-solid fa-3x fa-grip-lines icon"></i>
-            
+            <i id='three-line' style="margin: 15px" class="fa-solid fa-3x fa-grip-lines icon"></i>
         </div>
     </div>
-    
-    <div id = 'sub-container' class="sub-container">
-        <div class = 'sub-min-container'>
+
+    <div id='sub-container' class="sub-container">
+        <div class='sub-min-container'>
             <form id='note-form' class="note-main-container">
                 <div>
                     <label for='title'>Title</label>
@@ -65,15 +63,18 @@
                     </button>
                 </div>
             </form>
-            <ul id = 'dropdown' class="side-bar">
-                <li id = 'notes-list-back'>Archive</li>
-                <li id  ='trash-items'>Trash</li>
+            <ul id='dropdown' class="bar-hidden">
+                <li id='notes-list-back'> <i class="fa-solid fa-box-archive"></i>  Archive</li>
+                <li id='trash-items'> <i class="fa-regular fa-trash-can"></i>  Trash</li>
+                <li id = 'dark'> <i  class="fa-solid  fa-moon"></i>  Dark Theme </li>
+                <li id = 'light'> <i  class="fa-solid  fa-sun"></i>  Light Theme</li>
             </ul>
+
         </div>
 
         <div id='list-container'>
             <ul class="list" id='note-item'></ul>
-            <ul class="list" id = 'note-search-item'></ul>
+            <ul class="list" id='note-search-item'></ul>
         </div>
     </div>
 
